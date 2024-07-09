@@ -29,7 +29,7 @@ export const registerData = async (req,res) => {
 
         const user = await doc.save();
 
-        const token = jwt.sign({ _id: user._id }, 'secret123', { expiresIn: '30d' });
+        const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '30d' });
 
         res.json({ success: true, token, userId: user._id });
     } catch (err) {
@@ -75,7 +75,7 @@ export const login = async (req, res) => {
         const token = jwt.sign({
                 _id: user._id
             },
-            'secret123',
+            process.env.SECRET,
             {
                 expiresIn: '30d',
             },

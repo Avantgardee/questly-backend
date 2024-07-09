@@ -15,7 +15,7 @@ import {UserController, PostController, CommentController} from "./controllers/i
 import {handleValidationErrors, checkAuth} from "./utils/index.js";
 import {getSubscriptionsOrSubscribers, subscribeUser} from "./controllers/userController.js";
 
-mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0")
+mongoose.connect(process.env.MONGODB_URI)
     .then(()=> console.log("Database Connected Successfully"))
     .catch((err)=>console.log('DB error', err));
 
@@ -74,7 +74,7 @@ app.delete('/posts/:id',checkAuth, PostController.remove);
 app.patch('/posts/:id',checkAuth, postCreateValidation,handleValidationErrors,PostController.update);
 app.post('/comments/:id',checkAuth,commentCreateValidation,handleValidationErrors, CommentController.createComment )
 
-app.listen(4444,(err) => {
+app.listen(process.env.PORT || 4444,(err) => {
     if (err) {
         return console.error(err);
     }
