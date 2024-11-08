@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-
+import {sendToRabbitMQ} from "./rabbitmq.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 export const registerData = async (req,res) => {
@@ -29,7 +29,7 @@ export const registerData = async (req,res) => {
 
         const user = await doc.save();
 
-        const token = jwt.sign({ _id: user._id }, process.env.SECRET, { expiresIn: '30d' });
+        const token = jwt.sign({ _id: user._id }, 'secret123', { expiresIn: '30d' });
 
         res.json({ success: true, token, userId: user._id });
     } catch (err) {
@@ -75,7 +75,7 @@ export const login = async (req, res) => {
         const token = jwt.sign({
                 _id: user._id
             },
-            process.env.SECRET,
+            'secret123',
             {
                 expiresIn: '30d',
             },
@@ -245,7 +245,15 @@ export const subscribeUser = async (req, res) => {
         // Сохраняем изменения в базе данных
         await user.save();
         await subscribeUser.save();
+// Отправка сообщения в очередь RabbitMQ после успешной подписки
+        const message = {
+            action: 'subscribe',
+            actionByUser: userId,      // ID пользователя, который подписывается
+            actionOnUser: idSubscribe  // ID пользователя, на которого подписались
+        };
 
+        // Отправляем сообщение в очередь 'subscribe_queue'
+        await sendToRabbitMQ(message, 'subscribe');
         res.json({ success: true, message: 'Подписка успешно оформлена' });
     } catch (err) {
         console.log(err);

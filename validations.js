@@ -24,3 +24,8 @@ export const postCreateValidation = [
 export const commentCreateValidation = [
     body('text', 'Введите текст статьи').isLength({min: 1}).isString(),
 ];
+
+export const notificationCreateValidation = [
+    body('action').isIn(['post', 'comment', 'subscribe']).withMessage('Invalid action type'),
+    body('post').optional().isMongoId().withMessage('Invalid post ID format'),
+];

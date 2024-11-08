@@ -2,6 +2,14 @@ import PostModel from "../models/post.js";
 import {validationResult} from "express-validator";
 import CommentModel from "../models/comment.js";
 import UserModel from "../models/user.js";
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import {sendToRabbitMQ} from "./rabbitmq.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export const getPopularTags = async (req, res) => {
     try {
@@ -57,13 +65,17 @@ export const create = async (req, res) => {
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,
-            imageUrl: req.body.imageUrl,
             tags: req.body.tags,
             user: req.userId,
         });
         const post  = await doc.save();
-
-        res.json(post);
+        const message = {
+            actionByUser: req.userId,  // id пользователя
+            action: 'post',      // флаг действия (в данном случае post)
+            postId: post._id  // id созданного поста
+        };
+        await sendToRabbitMQ(message, 'post');
+        res.json({ success: true, postId: post._id });
     }
     catch (err){
         console.log(err);
@@ -73,6 +85,25 @@ export const create = async (req, res) => {
             });
     }
 }
+export const addImage = async (req,res) => {
+    try {
+        const postId = req.body.postId;
+        const post = await PostModel.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: 'Статья не найдена' });
+        }
+
+        post.imageUrl = `/uploads/${req.file.originalname}`;
+        await post.save();
+
+        res.json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось загрузить изображение' });
+    }
+};
+
 
 export const getAll = async (req, res) => {
     try{
@@ -309,7 +340,6 @@ export const update = async (req, res) => {
             {
                 title: req.body.title,
                 text: req.body.text,
-                imageUrl: req.body.imageUrl,
                 tags: req.body.tags,
                 user: req.userId,
             },
@@ -326,3 +356,42 @@ export const update = async (req, res) => {
             });
     }
 }
+export const updateImage = async (req, res) => {
+    try {
+        const postId = req.body.postId;
+        const post = await PostModel.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ message: 'Статья не найдена' });
+        }
+
+        if (req.file) {
+
+            // Удаляем старый файл, если существует
+            if (post.imageUrl) {
+                const oldPath = path.join(__dirname, '..', post.imageUrl);
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
+                }
+            }
+
+            // Обновляем с новым изображением
+            post.imageUrl = `/uploads/${req.file.filename}`;
+        } else {
+
+            // Если нет нового файла, удаляем старый
+            if (post.imageUrl) {
+                const oldPath = path.join(__dirname, '..', post.imageUrl);
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
+                }
+            }
+            post.imageUrl = '';
+        }
+        await post.save();
+        res.json({ success: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось обновить изображение статьи' });
+    }
+};
