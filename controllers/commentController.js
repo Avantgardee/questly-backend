@@ -19,12 +19,11 @@ export const createComment = async (req, res) => {
             const post = await PostModel.findById(postId);
             const message = {
                 action: 'comment',
-                actionByUser: req.userId,      // ID пользователя, который подписывается
+                actionByUser: req.userId,
                 actionOnUser: post.user,
-                postId: postId // id статьи
+                postId: postId
             };
 
-            // Отправляем сообщение в очередь 'subscribe_queue'
             await sendToRabbitMQ(message, 'comment');
         }
 
