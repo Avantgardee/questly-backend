@@ -14,7 +14,8 @@
     "dev": "concurrently \"npm run gateway\" \"npm run comment_service\" \"npm run notification_service\" \"npm run post_service\" \"npm run user_service\"",
     "debug user_service": "node microservices/user_service.js",
     "debug gateway": "node index.js",
-    "debug note": "node controllers/noteController.js"
+    "debug note": "node controllers/noteController.js",
+    "debug posts_service": "node microservices/post_service.js"
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +24,7 @@
     "amqplib": "^0.10.4",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "express-validator": "^7.0.1",

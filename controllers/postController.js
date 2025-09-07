@@ -62,6 +62,7 @@ export const getAllWithUser = async (req, res) => {
 
 export const create = async (req, res) => {
     try{
+
         const doc = new PostModel({
             title: req.body.title,
             text: req.body.text,

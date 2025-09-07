@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import fs from 'fs';
 import multer from 'multer';
+import cookieParser from 'cookie-parser'; // Добавьте эту строку
 import {
     registerData,
     registerImage,
@@ -14,7 +15,8 @@ import {
     updateUserAvatar,
     subscribeUser,
     unsubscribeUser,
-    getSubscriptionsOrSubscribers
+    getSubscriptionsOrSubscribers,
+    logout // Добавьте logout в импорт
 } from '../controllers/userController.js';
 import {
     createNote,
@@ -88,9 +90,13 @@ const formatHeaders = (headers) => {
         .join('\n');
 };
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000', // Укажите origin вашего клиента
+    credentials: true // Разрешаем отправку cookies
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Добавьте эту строку - это решает проблему
 app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => {
@@ -102,6 +108,7 @@ app.use((req, res, next) => {
     logToFile(`Headers:\n${formatHeaders(headers)}`);
     logToFile(`Body: ${JSON.stringify(body, null, 2)}`);
     logToFile(`Content-Type: ${headers['content-type']}`);
+    logToFile(`Cookies: ${JSON.stringify(req.cookies, null, 2)}`); // Добавьте для отладки
 
     const start = new Date();
 
@@ -126,6 +133,7 @@ const conditionalUpload = (req, res, next) => {
 app.post('/auth/register/data', registerValidation, handleValidationErrors, registerData);
 app.post('/auth/register/image', upload.single('image'), registerImage);
 app.post('/auth/login', loginValidation, handleValidationErrors, login);
+app.post('/auth/logout', logout); // Добавьте роут для выхода
 app.get('/user/:id', getUser);
 app.get('/auth/me', checkAuth, getMe);
 app.get('/users', getAllUsers);
