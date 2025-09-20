@@ -15,7 +15,9 @@
     "debug user_service": "node microservices/user_service.js",
     "debug gateway": "node index.js",
     "debug note": "node controllers/noteController.js",
-    "debug posts_service": "node microservices/post_service.js"
+    "debug posts_service": "node microservices/post_service.js",
+    "debug messages_service": "node microservices/messageService.js",
+    "debug websocket-gateway": "node microservices/websocketGateway.js"
   },
   "author": "",
   "license": "ISC",
@@ -34,7 +36,8 @@
     "mongoose": "^8.3.4",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.0",
-    "raw-body": "^3.0.0"
+    "raw-body": "^3.0.0",
+    "ws": "^8.18.3"
   },
   "jest": {
     "transform": {}

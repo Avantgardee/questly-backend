@@ -75,7 +75,9 @@ app.use(async (req, res, next) => {
         tags: 'http://localhost:5000',
         comments: 'http://localhost:5002',
         notifications: 'http://localhost:5003',
-        notes: 'http://localhost:5001'
+        notes: 'http://localhost:5001',
+        chats: 'http://localhost:5004',
+        messages: 'http://localhost:5004'
     };
 
     let targetServiceUrl = null;

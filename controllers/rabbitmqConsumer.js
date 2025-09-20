@@ -1,29 +1,22 @@
-// rabbitmqConsumer.js
 import amqp from 'amqplib';
 import NotificationModel from '../models/notification.js';
 import UserModel from '../models/user.js';
-
+import ChatModel from '../models/Chat.js';
+import MessageModel from '../models/Message.js';
 export async function startRabbitMQConsumer() {
     try {
-        // Подключаемся к RabbitMQ
         const connection = await amqp.connect('amqp://localhost');
         const channel = await connection.createChannel();
 
-        // Создаем или подключаемся к очередям
-        const queues = ['post_queue', 'comment_queue', 'subscribe_queue'];
+        const queues = ['post_queue', 'comment_queue', 'subscribe_queue', 'message_queue'];
 
         for (const queue of queues) {
             await channel.assertQueue(queue, { durable: true });
 
-            // Потребляем сообщения из каждой очереди
             channel.consume(queue, async (msg) => {
                 if (msg !== null) {
                     const messageContent = JSON.parse(msg.content.toString());
-
-                    // Обработка полученного сообщения и создание уведомления
                     await handleMessage(messageContent, queue);
-
-                    // Подтверждаем сообщение как обработанное
                     channel.ack(msg);
                 }
             });
@@ -35,28 +28,35 @@ export async function startRabbitMQConsumer() {
     }
 }
 
-// Функция для обработки сообщения и создания уведомления
 async function handleMessage(message, queue) {
-    const { action, postId, actionByUser } = message;
+    const { action, postId, actionByUser, chatId, messageId } = message;
     let actionOnUser = message.actionOnUser || [];
 
     if (queue === 'post_queue') {
-        // Если действие 'post', получаем подписчиков пользователя
         const user = await UserModel.findById(actionByUser);
         if (user) {
-            actionOnUser = user.subscribers;  // Массив подписчиков пользователя
+            actionOnUser = user.subscribers;
+        }
+    } else if (queue === 'message_queue') {
+        // Для сообщений actionOnUser - получатель сообщения
+        const chat = await ChatModel.findById(chatId).populate('participants');
+        if (chat) {
+            const recipient = chat.participants.find(p => p._id.toString() !== actionByUser);
+            if (recipient) {
+                actionOnUser = [recipient._id];
+            }
         }
     }
 
-    // Создаем уведомление в зависимости от типа действия
     const notification = new NotificationModel({
         actionByUser: actionByUser,
         action: action || queue.replace('_queue', ''),
         actionOnUser: actionOnUser,
         post: postId || null,
+        chat: chatId || null,
+        message: messageId || null
     });
 
-    // Сохраняем уведомление в базе данных
     await notification.save();
     console.log('Notification saved:', notification);
 }

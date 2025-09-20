@@ -1,14 +1,10 @@
-// rabbitmq.js
 import amqp from 'amqplib';
-
-// Функция для отправки сообщения в RabbitMQ
+import ChatModel from '../models/Chat.js';
 export async function sendToRabbitMQ(message, actionType) {
     try {
-        // Подключение к серверу RabbitMQ
         const connection = await amqp.connect('amqp://localhost');
         const channel = await connection.createChannel();
 
-        // Определение очереди на основе типа действия
         let queue;
         switch (actionType) {
             case 'post':
@@ -20,14 +16,14 @@ export async function sendToRabbitMQ(message, actionType) {
             case 'subscribe':
                 queue = 'subscribe_queue';
                 break;
+            case 'message':
+                queue = 'message_queue';
+                break;
             default:
                 throw new Error('Invalid action type');
         }
 
-        // Создаем очередь, если она не существует
         await channel.assertQueue(queue, { durable: true });
-
-        // Отправляем сообщение в очередь
         channel.sendToQueue(queue, Buffer.from(JSON.stringify(message)), { persistent: true });
 
         console.log(`Message sent to RabbitMQ in ${queue}:`, message);

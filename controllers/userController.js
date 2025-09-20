@@ -11,6 +11,32 @@ import {sendToRabbitMQ} from "./rabbitmq.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+export const getToken = async (req, res) => {
+    try {
+        // Токен уже в cookie, но мы можем вернуть его в ответе
+        // Или создать специальный токен для WebSocket
+        const token = jwt.sign({ _id: req.userId }, 'secret123', { expiresIn: '1h' });
+
+        res.json({ token });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось получить токен' });
+    }
+};
+export const getWebSocketToken = async (req, res) => {
+    try {
+        // Создаем короткоживущий токен специально для WebSocket
+        const wsToken = jwt.sign({
+            _id: req.userId,
+            purpose: 'websocket'
+        }, 'secret123', { expiresIn: '1h' });
+
+        res.json({ wsToken });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось получить WebSocket токен' });
+    }
+};
 export const registerData = async (req, res) => {
     try {
         const { email, fullName, password } = req.body;
@@ -32,12 +58,11 @@ export const registerData = async (req, res) => {
 
         const token = jwt.sign({ _id: user._id }, 'secret123', { expiresIn: '30d' });
 
-        // Устанавливаем токен в HTTPOnly cookie
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 дней
+            maxAge: 30 * 24 * 60 * 60 * 1000
         });
 
         res.json({ success: true, userId: user._id });
@@ -90,12 +115,11 @@ export const login = async (req, res) => {
                 expiresIn: '30d',
             });
 
-        // Устанавливаем токен в HTTPOnly cookie
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
-            maxAge: 30 * 24 * 60 * 60 * 1000 // 30 дней
+            maxAge: 30 * 24 * 60 * 60 * 1000
         });
 
         const { passwordHash, ...userData } = user._doc;
@@ -137,7 +161,6 @@ export const getMe = async (req, res) => {
     }
 };
 
-// Остальные функции остаются без изменений, так как они используют req.userId из мидлвейра
 export const getUser = async (req, res) => {
     try {
         const userId = req.params.id;
@@ -263,7 +286,7 @@ export const subscribeUser = async (req, res) => {
         };
 
         await sendToRabbitMQ(message, 'subscribe');
-        res.json({ success: true, message: 'Подписка успешно оформлена' });
+        res.json({ success: true, message: 'Подпика успешно оформлена' });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось оформить подписку' });
@@ -342,5 +365,49 @@ export const getAllUsers = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось получить данные пользователей' });
+    }
+};
+
+export const getSubscriptions = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Пожалуйста, предоставьте ID пользователя' });
+        }
+
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Пользователь не найден' });
+        }
+
+        const subscriptions = await UserModel.find({ _id: { $in: user.subscriptions } }).select('fullName avatarUrl email');
+
+        res.json(subscriptions);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось получить подписки' });
+    }
+};
+
+export const getSubscribers = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'Пожалуйста, предоставьте ID пользователя' });
+        }
+
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Пользователь не найден' });
+        }
+
+        const subscribers = await UserModel.find({ _id: { $in: user.subscribers } }).select('fullName avatarUrl email');
+
+        res.json(subscribers);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось получить подписчиков' });
     }
 };

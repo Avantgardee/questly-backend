@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import fs from 'fs';
 import multer from 'multer';
-import cookieParser from 'cookie-parser'; // Добавьте эту строку
+import cookieParser from 'cookie-parser';
 import {
     registerData,
     registerImage,
@@ -16,7 +16,9 @@ import {
     subscribeUser,
     unsubscribeUser,
     getSubscriptionsOrSubscribers,
-    logout // Добавьте logout в импорт
+    logout,
+    getSubscriptions,
+    getSubscribers, getToken, getWebSocketToken
 } from '../controllers/userController.js';
 import {
     createNote,
@@ -39,7 +41,6 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
     .then(() => logToFile("Database Connected Successfully"))
     .catch((err) => logToFile('DB error: ' + err));
 
-// Настройка multer для загрузки аватаров пользователей
 const upload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
@@ -55,7 +56,6 @@ const upload = multer({
     })
 });
 
-// Настройка multer для загрузки файлов заметок
 const noteUpload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
@@ -71,7 +71,6 @@ const noteUpload = multer({
     })
 });
 
-// Middleware для парсинга multipart/form-data
 const parseFormData = multer().none();
 
 const logToFile = (message) => {
@@ -91,12 +90,12 @@ const formatHeaders = (headers) => {
 };
 
 app.use(cors({
-    origin: 'http://localhost:3000', // Укажите origin вашего клиента
-    credentials: true // Разрешаем отправку cookies
+    origin: 'http://localhost:3000',
+    credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Добавьте эту строку - это решает проблему
+app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
 
 app.use((req, res, next) => {
@@ -108,7 +107,7 @@ app.use((req, res, next) => {
     logToFile(`Headers:\n${formatHeaders(headers)}`);
     logToFile(`Body: ${JSON.stringify(body, null, 2)}`);
     logToFile(`Content-Type: ${headers['content-type']}`);
-    logToFile(`Cookies: ${JSON.stringify(req.cookies, null, 2)}`); // Добавьте для отладки
+    logToFile(`Cookies: ${JSON.stringify(req.cookies, null, 2)}`);
 
     const start = new Date();
 
@@ -128,12 +127,12 @@ const conditionalUpload = (req, res, next) => {
         next();
     }
 };
-
-// Существующие роуты
+app.get('/auth/ws-token', checkAuth, getWebSocketToken);
+app.get('/auth/token', checkAuth, getToken);
 app.post('/auth/register/data', registerValidation, handleValidationErrors, registerData);
 app.post('/auth/register/image', upload.single('image'), registerImage);
 app.post('/auth/login', loginValidation, handleValidationErrors, login);
-app.post('/auth/logout', logout); // Добавьте роут для выхода
+app.post('/auth/logout', logout);
 app.get('/user/:id', getUser);
 app.get('/auth/me', checkAuth, getMe);
 app.get('/users', getAllUsers);
@@ -142,6 +141,8 @@ app.patch('/profile/:id/editImage', checkAuth, conditionalUpload, updateUserAvat
 app.post('/profile/:id/subscribe', checkAuth, subscribeUser);
 app.post('/profile/:id/unsubscribe', checkAuth, unsubscribeUser);
 app.get('/profile/:id/:group', getSubscriptionsOrSubscribers);
+app.get('/profile/:id/subscriptions/list', getSubscriptions);
+app.get('/profile/:id/subscribers/list', getSubscribers);
 
 app.post('/notes/:userId/create', checkAuth, parseFormData, createNote);
 app.post('/notes/:userId/upload-files', checkAuth, noteUpload.array('files'), uploadNoteFiles);

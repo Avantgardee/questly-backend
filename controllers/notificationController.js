@@ -1,6 +1,8 @@
 import NotificationModel from '../models/notification.js';
 import UserModel from '../models/user.js';
 import PostModel from '../models/post.js';
+import ChatModel from '../models/Chat.js';
+import MessageModel from '../models/Message.js';
 // Создание нового уведомления
 export const createNotification = async (req, res) => {
     try {

@@ -29,3 +29,8 @@ export const notificationCreateValidation = [
     body('action').isIn(['post', 'comment', 'subscribe']).withMessage('Invalid action type'),
     body('post').optional().isMongoId().withMessage('Invalid post ID format'),
 ];
+
+export const messageValidation = [
+    body('text').optional().isString().withMessage('Текст должен быть строкой'),
+    body('chatId').isMongoId().withMessage('Неверный формат ID чата')
+];

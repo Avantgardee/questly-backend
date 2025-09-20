@@ -8,7 +8,7 @@ const NotificationSchema = new mongoose.Schema({
     },
     action: {
         type: String,
-        enum: ['post', 'comment', 'subscribe'],
+        enum: ['post', 'comment', 'subscribe','message'],
         required: true,
     },
     actionOnUser: {
