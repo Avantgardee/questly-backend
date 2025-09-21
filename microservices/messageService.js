@@ -24,7 +24,6 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
     .then(() => logToFile("Message Service: Database Connected Successfully"))
     .catch((err) => logToFile('Message Service: DB error: ' + err));
 
-// Настройка multer для загрузки файлов сообщений
 const messageUpload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
@@ -78,14 +77,12 @@ app.use((req, res, next) => {
     next();
 });
 
-// Роуты для сообщений
 app.post('/chats/create', checkAuth, createChat);
 app.get('/chats', checkAuth, getUserChats);
 app.get('/chats/:chatId/messages', checkAuth, getChatMessages);
 app.post('/messages/send', checkAuth, messageValidation, handleValidationErrors, sendMessage);
 app.post('/messages/upload-files', checkAuth, messageUpload.array('files'), uploadMessageFiles);
 
-// Новые роуты для удаления и редактирования
 app.delete('/messages/:messageId', checkAuth, deleteMessage);
 app.delete('/chats/:chatId', checkAuth, deleteChat);
 app.delete('/chats/:chatId/clear', checkAuth, clearChat);

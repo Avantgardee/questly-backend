@@ -10,6 +10,11 @@ const ChatSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
     },
+    unreadCount: {
+        type: Map,
+        of: Number,
+        default: {}
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -21,5 +26,15 @@ const ChatSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+ChatSchema.methods.incrementUnreadCount = function(userId) {
+    const currentCount = this.unreadCount.get(userId.toString()) || 0;
+    this.unreadCount.set(userId.toString(), currentCount + 1);
+};
+
+ChatSchema.methods.resetUnreadCount = function(userId) {
+    this.unreadCount.set(userId.toString(), 0);
+};
+
 
 export default mongoose.model("Chat", ChatSchema);

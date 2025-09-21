@@ -19,7 +19,6 @@ export const deleteMessage = async (req, res) => {
             return res.status(400).json({ message: 'Укажите ID сообщения' });
         }
 
-        // Находим сообщение
         const message = await MessageModel.findById(messageId)
             .populate('chat', 'participants');
 
@@ -27,7 +26,6 @@ export const deleteMessage = async (req, res) => {
             return res.status(404).json({ message: 'Сообщение не найдено' });
         }
 
-        // Проверяем, что пользователь является отправителем сообщения или участником чата
         const isSender = message.sender.toString() === userId;
         const isParticipant = message.chat.participants.some(p => p.toString() === userId);
 
@@ -35,7 +33,6 @@ export const deleteMessage = async (req, res) => {
             return res.status(403).json({ message: 'Нет прав для удаления сообщения' });
         }
 
-        // Удаляем прикрепленные файлы
         if (message.attachments && message.attachments.length > 0) {
             message.attachments.forEach(filePath => {
                 const fullPath = path.join(__dirname, '..', '..', filePath);
@@ -45,13 +42,10 @@ export const deleteMessage = async (req, res) => {
             });
         }
 
-        // Удаляем сообщение из базы данных
         await MessageModel.findByIdAndDelete(messageId);
 
-        // Если это последнее сообщение в чате, обновляем lastMessage в чате
         const chat = await ChatModel.findById(message.chat._id);
         if (chat.lastMessage && chat.lastMessage.toString() === messageId) {
-            // Находим новое последнее сообщение
             const lastMessage = await MessageModel.findOne(
                 { chat: message.chat._id },
                 {},
@@ -61,12 +55,6 @@ export const deleteMessage = async (req, res) => {
             chat.lastMessage = lastMessage ? lastMessage._id : null;
             await chat.save();
         }
-
-        // Отправляем уведомление через WebSocket (если реализовано)
-        // webSocketService.broadcastToChat(message.chat._id, {
-        //     type: 'MESSAGE_DELETED',
-        //     data: { messageId }
-        // });
 
         res.json({ success: true, message: 'Сообщение удалено' });
     } catch (err) {
@@ -84,7 +72,6 @@ export const deleteChat = async (req, res) => {
             return res.status(400).json({ message: 'Укажите ID чата' });
         }
 
-        // Проверяем, что пользователь является участником чата
         const chat = await ChatModel.findOne({
             _id: chatId,
             participants: userId
@@ -94,10 +81,8 @@ export const deleteChat = async (req, res) => {
             return res.status(404).json({ message: 'Чат не найден или доступ запрещен' });
         }
 
-        // Находим все сообщения в чате для удаления файлов
         const messages = await MessageModel.find({ chat: chatId });
 
-        // Удаляем прикрепленные файлы всех сообщений
         messages.forEach(message => {
             if (message.attachments && message.attachments.length > 0) {
                 message.attachments.forEach(filePath => {
@@ -109,10 +94,8 @@ export const deleteChat = async (req, res) => {
             }
         });
 
-        // Удаляем все сообщения чата
         await MessageModel.deleteMany({ chat: chatId });
 
-        // Удаляем сам чат
         await ChatModel.findByIdAndDelete(chatId);
 
         res.json({ success: true, message: 'Чат удален' });
@@ -131,7 +114,6 @@ export const clearChat = async (req, res) => {
             return res.status(400).json({ message: 'Укажите ID чата' });
         }
 
-        // Проверяем, что пользователь является участником чата
         const chat = await ChatModel.findOne({
             _id: chatId,
             participants: userId
@@ -141,10 +123,8 @@ export const clearChat = async (req, res) => {
             return res.status(404).json({ message: 'Чат не найден или доступ запрещен' });
         }
 
-        // Находим все сообщения в чате для удаления файлов
         const messages = await MessageModel.find({ chat: chatId });
 
-        // Удаляем прикрепленные файлы всех сообщений
         messages.forEach(message => {
             if (message.attachments && message.attachments.length > 0) {
                 message.attachments.forEach(filePath => {
@@ -156,10 +136,8 @@ export const clearChat = async (req, res) => {
             }
         });
 
-        // Удаляем все сообщения чата
         await MessageModel.deleteMany({ chat: chatId });
 
-        // Обновляем lastMessage в чате
         chat.lastMessage = null;
         await chat.save();
 
@@ -180,19 +158,16 @@ export const editMessage = async (req, res) => {
             return res.status(400).json({ message: 'Укажите ID сообщения и текст' });
         }
 
-        // Находим сообщение
         const message = await MessageModel.findById(messageId);
 
         if (!message) {
             return res.status(404).json({ message: 'Сообщение не найдено' });
         }
 
-        // Проверяем, что пользователь является отправителем сообщения
         if (message.sender.toString() !== userId) {
             return res.status(403).json({ message: 'Можно редактировать только свои сообщения' });
         }
 
-        // Проверяем, что сообщение не старше 15 минут
         const messageAge = Date.now() - new Date(message.createdAt).getTime();
         const fifteenMinutes = 15 * 60 * 1000;
 
@@ -200,19 +175,12 @@ export const editMessage = async (req, res) => {
             return res.status(400).json({ message: 'Можно редактировать только сообщения младше 15 минут' });
         }
 
-        // Обновляем сообщение
         message.text = text;
         message.edited = true;
         message.editedAt = new Date();
         await message.save();
 
         await message.populate('sender', 'fullName avatarUrl');
-
-        // Отправляем уведомление через WebSocket (если реализовано)
-        // webSocketService.broadcastToChat(message.chat, {
-        //     type: 'MESSAGE_EDITED',
-        //     data: message
-        // });
 
         res.json(message);
     } catch (err) {
@@ -230,23 +198,32 @@ export const createChat = async (req, res) => {
             return res.status(400).json({ message: 'Укажите участника чата' });
         }
 
-        // Проверяем, существует ли уже чат между этими пользователями
         const existingChat = await ChatModel.findOne({
             participants: { $all: [userId, participantId] }
         }).populate('participants', 'fullName avatarUrl');
 
         if (existingChat) {
-            return res.json(existingChat);
+            const chatObject = existingChat.toObject();
+            chatObject.unreadCount = Object.fromEntries(chatObject.unreadCount || []);
+            return res.json(chatObject);
         }
 
+        const unreadCount = new Map();
+        unreadCount.set(userId, 0);
+        unreadCount.set(participantId, 0);
+
         const chat = new ChatModel({
-            participants: [userId, participantId]
+            participants: [userId, participantId],
+            unreadCount: unreadCount
         });
 
         await chat.save();
         await chat.populate('participants', 'fullName avatarUrl');
 
-        res.json(chat);
+        const chatObject = chat.toObject();
+        chatObject.unreadCount = Object.fromEntries(chatObject.unreadCount);
+
+        res.json(chatObject);
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось создать чат' });
@@ -261,10 +238,22 @@ export const getUserChats = async (req, res) => {
             participants: userId
         })
             .populate('participants', 'fullName avatarUrl')
-            .populate('lastMessage')
+            .populate({
+                path: 'lastMessage',
+                populate: {
+                    path: 'sender',
+                    select: 'fullName avatarUrl'
+                }
+            })
             .sort({ updatedAt: -1 });
 
-        res.json(chats);
+        const chatsWithUnreadCount = chats.map(chat => {
+            const chatObject = chat.toObject();
+            chatObject.unreadCount = Object.fromEntries(chatObject.unreadCount || []);
+            return chatObject;
+        });
+
+        res.json(chatsWithUnreadCount);
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось получить чаты' });
@@ -276,7 +265,6 @@ export const getChatMessages = async (req, res) => {
         const { chatId } = req.params;
         const userId = req.userId;
 
-        // Проверяем, что пользователь является участником чата
         const chat = await ChatModel.findOne({
             _id: chatId,
             participants: userId
@@ -290,7 +278,6 @@ export const getChatMessages = async (req, res) => {
             .populate('sender', 'fullName avatarUrl')
             .sort({ createdAt: 1 });
 
-        // Помечаем сообщения как прочитанные
         await MessageModel.updateMany(
             {
                 chat: chatId,
@@ -320,7 +307,6 @@ export const sendMessage = async (req, res) => {
             return res.status(400).json({ message: 'Укажите ID чата' });
         }
 
-        // Проверяем, что пользователь является участником чата
         const chat = await ChatModel.findOne({
             _id: chatId,
             participants: userId
@@ -340,12 +326,10 @@ export const sendMessage = async (req, res) => {
         await message.save();
         await message.populate('sender', 'fullName avatarUrl');
 
-        // Обновляем последнее сообщение в чате
         chat.lastMessage = message._id;
         chat.updatedAt = new Date();
         await chat.save();
 
-        // Отправляем уведомление через RabbitMQ
         const recipient = chat.participants.find(id => id.toString() !== userId);
         await sendToRabbitMQ({
             action: 'message',

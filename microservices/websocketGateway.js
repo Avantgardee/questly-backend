@@ -43,7 +43,6 @@ wss.on('connection', (ws, req) => {
         connectedUsers.set(userId, ws);
         console.log(`User ${userId} connected`);
 
-        // Отправляем статусы доставки для непрочитанных сообщений
         sendPendingDeliveryStatuses(userId);
 
         ws.on('message', async (message) => {
@@ -70,9 +69,9 @@ wss.on('connection', (ws, req) => {
         ws.close(1008, 'Invalid token');
     }
 });
+
 async function sendPendingDeliveryStatuses(userId) {
     try {
-        // Находим все сообщения, которые были доставлены этому пользователю, но статус еще не отправлен
         const undeliveredMessages = await MessageModel.find({
             deliveredTo: { $ne: userId },
             chat: { $in: await getUsersChats(userId) },
@@ -80,7 +79,6 @@ async function sendPendingDeliveryStatuses(userId) {
         }).populate('sender', 'fullName avatarUrl').populate('chat');
 
         for (const message of undeliveredMessages) {
-            // Отправляем статус доставки отправителю
             const senderWs = connectedUsers.get(message.sender._id.toString());
             if (senderWs && senderWs.readyState === 1) {
                 senderWs.send(JSON.stringify({
@@ -93,7 +91,6 @@ async function sendPendingDeliveryStatuses(userId) {
                 }));
             }
 
-            // Обновляем статус доставки
             await MessageModel.findByIdAndUpdate(message._id, {
                 $addToSet: { deliveredTo: userId },
                 status: 'delivered'
@@ -108,6 +105,7 @@ async function getUsersChats(userId) {
     const chats = await ChatModel.find({ participants: userId });
     return chats.map(chat => chat._id);
 }
+
 async function handleMessage(senderId, message) {
     console.log('Received message:', message.type, 'from:', senderId);
 
@@ -126,6 +124,9 @@ async function handleMessage(senderId, message) {
             break;
         case 'READ_MESSAGE':
             await handleReadMessage(senderId, message);
+            break;
+        case 'MARK_CHAT_AS_READ':
+            await handleMarkChatAsRead(senderId, message);
             break;
         case 'MESSAGE_DELIVERED':
             await handleMessageDelivered(senderId, message);
@@ -282,6 +283,14 @@ async function handleSendMessage(senderId, message) {
 
         chat.lastMessage = newMessage._id;
         chat.updatedAt = new Date();
+
+        chat.participants.forEach(participantId => {
+            if (participantId.toString() !== senderId) {
+                const currentCount = chat.unreadCount.get(participantId.toString()) || 0;
+                chat.unreadCount.set(participantId.toString(), currentCount + 1);
+            }
+        });
+        chat.markModified('unreadCount');
         await chat.save();
 
         const participants = chat.participants.map(p => p.toString());
@@ -291,10 +300,13 @@ async function handleSendMessage(senderId, message) {
             if (ws && ws.readyState === 1) {
                 ws.send(JSON.stringify({
                     type: 'NEW_MESSAGE',
-                    data: newMessage
+                    data: {
+                        message: newMessage,
+                        chat: chat,
+                    }
                 }));
                 console.log('Message sent to user:', participantId);
-                // Если сообщение доставлено другому пользователю, отправляем статус доставки
+
                 if (participantId !== senderId) {
                     const senderWs = connectedUsers.get(senderId);
                     if (senderWs && senderWs.readyState === 1) {
@@ -308,7 +320,6 @@ async function handleSendMessage(senderId, message) {
                         }));
                     }
 
-                    // Обновляем статус доставки
                     await MessageModel.findByIdAndUpdate(newMessage._id, {
                         $addToSet: { deliveredTo: participantId },
                         status: 'delivered'
@@ -355,18 +366,17 @@ async function handleTyping(senderId, message) {
         console.error('Error handling typing:', error);
     }
 }
+
 async function handleMessageDelivered(senderId, message) {
     try {
         const { messageId } = message.data;
         console.log('Message delivered confirmation:', messageId, 'by user:', senderId);
 
-        // Обновляем статус доставки
         await MessageModel.findByIdAndUpdate(messageId, {
             $addToSet: { deliveredTo: senderId },
             status: 'delivered'
         });
 
-        // Уведомляем отправителя о доставке
         const messageDoc = await MessageModel.findById(messageId).populate('sender');
         if (messageDoc && messageDoc.sender._id.toString() !== senderId) {
             const senderWs = connectedUsers.get(messageDoc.sender._id.toString());
@@ -386,19 +396,24 @@ async function handleMessageDelivered(senderId, message) {
         console.error('Error handling message delivered:', error);
     }
 }
+
 async function handleReadMessage(senderId, message) {
     try {
         const { messageId } = message.data;
         console.log('Marking message as read:', messageId, 'by user:', senderId);
 
-        // Обновляем статус сообщения как прочитанное
-        const updatedMessage = await MessageModel.findByIdAndUpdate(messageId, {
+        const messageDoc = await MessageModel.findById(messageId).populate('sender');
+
+        if (!messageDoc) {
+            console.log(`Message with id ${messageId} not found`);
+            return;
+        }
+
+        await MessageModel.findByIdAndUpdate(messageId, {
             $addToSet: { readBy: senderId },
             status: 'read'
         }, { new: true });
 
-        // Уведомляем отправителя о прочтении
-        const messageDoc = await MessageModel.findById(messageId).populate('sender');
         if (messageDoc && messageDoc.sender._id.toString() !== senderId) {
             const senderWs = connectedUsers.get(messageDoc.sender._id.toString());
             if (senderWs && senderWs.readyState === 1) {
@@ -416,6 +431,38 @@ async function handleReadMessage(senderId, message) {
 
     } catch (error) {
         console.error('Error handling read message:', error);
+    }
+}
+
+async function handleMarkChatAsRead(senderId, message) {
+    try {
+        const { chatId } = message.data;
+        console.log(`Marking chat ${chatId} as read for user ${senderId}`);
+        const chat = await ChatModel.findById(chatId);
+        if (!chat) {
+            console.log(`Chat with id ${chatId} not found`);
+            return;
+        }
+
+        chat.unreadCount.set(senderId, 0);
+        chat.markModified('unreadCount');
+        await chat.save();
+
+        console.log(`Unread count for user ${senderId} in chat ${chatId} reset to 0`);
+
+        const ws = connectedUsers.get(senderId);
+        if(ws && ws.readyState === 1) {
+            ws.send(JSON.stringify({
+                type: 'CHAT_MARKED_AS_READ',
+                data: {
+                    chatId,
+                    userId: senderId
+                }
+            }));
+        }
+
+    } catch (error) {
+        console.error('Error handling mark chat as read:', error);
     }
 }
 
