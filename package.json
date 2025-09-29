@@ -4,20 +4,53 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js"
+    "gateway": "nodemon index.js",
+    "comment_service": "nodemon microservices/comment_service.js",
+    "notification_service": "nodemon microservices/notification_service.js",
+    "post_service": "nodemon microservices/post_service.js",
+    "user_service": "nodemon microservices/user_service.js",
+    "start": "nodemon index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "dev": "concurrently \"npm run gateway\" \"npm run comment_service\" \"npm run notification_service\" \"npm run post_service\" \"npm run user_service\"",
+    "debug user_service": "node microservices/user_service.js",
+    "debug gateway": "node index.js",
+    "debug note": "node controllers/noteController.js",
+    "debug posts_service": "node microservices/post_service.js",
+    "debug messages_service": "node microservices/messageService.js",
+    "debug websocket-gateway": "node microservices/websocketGateway.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@graphql-tools/schema": "^10.0.25",
+    "amqplib": "^0.10.4",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "express-validator": "^7.0.1",
+    "form-data": "^4.0.0",
+    "graphql": "^16.11.0",
+    "graphql-yoga": "^5.16.0",
     "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
     "moment": "^2.30.1",
-    "mongoose": "^8.3.4",
+    "mongoose": "^8.18.1",
     "multer": "^1.4.5-lts.1",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "raw-body": "^3.0.0",
+    "ws": "^8.18.3"
+  },
+  "jest": {
+    "transform": {}
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.25.8",
+    "babel-jest": "^29.7.0",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "jest": "^29.7.0"
   }
 }
