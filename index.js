@@ -5,7 +5,7 @@ import cors from 'cors';
 import axios from 'axios';
 import { checkAuth } from "./utils/index.js";
 import FormData from 'form-data';
-import cookieParser from 'cookie-parser'; // Добавляем cookie-parser
+import cookieParser from 'cookie-parser';
 
 mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => console.log("Database Connected Successfully"))
@@ -14,10 +14,9 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
 const app = express();
 const upload = multer();
 
-// Настройка CORS для gateway
 app.use(cors({
-    origin: 'http://localhost:3000', // URL вашего клиентского приложения
-    credentials: true, // Разрешаем отправку cookies
+    origin: 'http://localhost:3000',
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
@@ -28,7 +27,7 @@ app.use(cookieParser()); // Добавляем cookie-parser для gateway
 app.use('/uploads', express.static('uploads'));
 app.use(upload.any());
 
-// Middleware для обработки preflight запросов
+
 app.options('*', cors({
     origin: 'http://localhost:3000',
     credentials: true,
@@ -39,7 +38,7 @@ app.options('*', cors({
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
     console.log('Headers:', JSON.stringify(req.headers, null, 2));
-    console.log('Cookies:', JSON.stringify(req.cookies, null, 2)); // Логируем cookies
+    console.log('Cookies:', JSON.stringify(req.cookies, null, 2));
 
     if (req.is('multipart/form-data')) {
         console.log('Form fields:');
@@ -77,7 +76,8 @@ app.use(async (req, res, next) => {
         notifications: 'http://localhost:5003',
         notes: 'http://localhost:5001',
         chats: 'http://localhost:5004',
-        messages: 'http://localhost:5004'
+        messages: 'http://localhost:5004',
+        graphql: 'http://localhost:5005'
     };
 
     let targetServiceUrl = null;
@@ -99,27 +99,24 @@ app.use(async (req, res, next) => {
             url: targetServiceUrl,
             headers: {
                 ...req.headers,
-                host: new URL(targetServiceUrl).host, // Устанавливаем правильный host
-                cookie: req.headers.cookie || '' // Передаем cookies
+                host: new URL(targetServiceUrl).host,
+                cookie: req.headers.cookie || ''
             },
-            withCredentials: true // Важно: разрешаем отправку cookies
+            withCredentials: true
         };
 
-        // Удаляем несовместимые заголовки
         delete axiosConfig.headers['content-length'];
         delete axiosConfig.headers['host'];
 
         if (req.is('multipart/form-data')) {
             const form = new FormData();
 
-            // Добавляем текстовые поля
             for (const [key, value] of Object.entries(req.body)) {
                 if (value !== undefined && value !== null) {
                     form.append(key, value.toString());
                 }
             }
 
-            // Добавляем файлы
             if (req.files && req.files.length > 0) {
                 req.files.forEach(file => {
                     form.append(file.fieldname, file.buffer, {
@@ -148,7 +145,6 @@ app.use(async (req, res, next) => {
 
         const response = await axios(axiosConfig);
 
-        // Копируем cookies из ответа микросервиса в ответ gateway
         if (response.headers['set-cookie']) {
             res.setHeader('Set-Cookie', response.headers['set-cookie']);
         }
@@ -160,7 +156,6 @@ app.use(async (req, res, next) => {
         console.error('Error details:', error.response?.data);
 
         if (error.response) {
-            // Копируем cookies из ошибки микросервиса
             if (error.response.headers['set-cookie']) {
                 res.setHeader('Set-Cookie', error.response.headers['set-cookie']);
             }

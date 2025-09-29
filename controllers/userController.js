@@ -13,8 +13,6 @@ const __dirname = dirname(__filename);
 
 export const getToken = async (req, res) => {
     try {
-        // Токен уже в cookie, но мы можем вернуть его в ответе
-        // Или создать специальный токен для WebSocket
         const token = jwt.sign({ _id: req.userId }, 'secret123', { expiresIn: '1h' });
 
         res.json({ token });
@@ -23,9 +21,9 @@ export const getToken = async (req, res) => {
         res.status(500).json({ message: 'Не удалось получить токен' });
     }
 };
+
 export const getWebSocketToken = async (req, res) => {
     try {
-        // Создаем короткоживущий токен специально для WebSocket
         const wsToken = jwt.sign({
             _id: req.userId,
             purpose: 'websocket'
@@ -37,6 +35,7 @@ export const getWebSocketToken = async (req, res) => {
         res.status(500).json({ message: 'Не удалось получить WebSocket токен' });
     }
 };
+
 export const registerData = async (req, res) => {
     try {
         const { email, fullName, password } = req.body;
