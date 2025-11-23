@@ -276,6 +276,10 @@ export const getChatMessages = async (req, res) => {
 
         const messages = await MessageModel.find({ chat: chatId })
             .populate('sender', 'fullName avatarUrl')
+            .populate({
+                path: 'replyTo',
+                populate: { path: 'sender', select: 'fullName avatarUrl' }
+            })
             .sort({ createdAt: 1 });
 
         await MessageModel.updateMany(

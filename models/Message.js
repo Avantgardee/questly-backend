@@ -38,6 +38,10 @@ const MessageSchema = new mongoose.Schema({
     },
     editedAt: {
         type: Date
+    },
+    replyTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
     }
 }, {
     timestamps: true
