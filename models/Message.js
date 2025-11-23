@@ -31,7 +31,14 @@ const MessageSchema = new mongoose.Schema({
     deliveredTo: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    }]
+    }],
+    edited: {
+        type: Boolean,
+        default: false
+    },
+    editedAt: {
+        type: Date
+    }
 }, {
     timestamps: true
 });

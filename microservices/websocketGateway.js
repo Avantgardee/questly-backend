@@ -187,13 +187,28 @@ async function handleDeleteMessage(senderId, message) {
             console.log('Updated last message for chat:', chat._id);
         }
 
+        // Получаем обновленный чат с новым lastMessage
+        const updatedChat = await ChatModel.findById(messageDoc.chat._id)
+            .populate('lastMessage')
+            .populate({
+                path: 'lastMessage',
+                populate: {
+                    path: 'sender',
+                    select: 'fullName avatarUrl'
+                }
+            });
+
         for (const participantId of messageDoc.chat.participants) {
             const participantStr = participantId.toString();
             const ws = connectedUsers.get(participantStr);
             if (ws && ws.readyState === 1) {
                 ws.send(JSON.stringify({
                     type: 'MESSAGE_DELETED',
-                    data: { messageId, chatId: messageDoc.chat._id }
+                    data: { 
+                        messageId, 
+                        chatId: messageDoc.chat._id,
+                        chat: updatedChat
+                    }
                 }));
                 console.log('Notified user about deletion:', participantStr);
             }
@@ -238,13 +253,24 @@ async function handleEditMessage(senderId, message) {
         console.log('Message edited:', messageId);
 
         const chat = await ChatModel.findById(messageDoc.chat);
+        
+        // Проверяем, является ли это сообщение последним в чате
+        if (chat.lastMessage && chat.lastMessage.toString() === messageId) {
+            chat.lastMessage = messageDoc._id;
+            chat.updatedAt = new Date();
+            await chat.save();
+        }
+
         for (const participantId of chat.participants) {
             const participantStr = participantId.toString();
             const ws = connectedUsers.get(participantStr);
             if (ws && ws.readyState === 1) {
                 ws.send(JSON.stringify({
                     type: 'MESSAGE_EDITED',
-                    data: messageDoc
+                    data: {
+                        message: messageDoc,
+                        chat: chat
+                    }
                 }));
             }
         }

@@ -290,6 +290,11 @@ export const getChatMessages = async (req, res) => {
             }
         );
 
+        // Обновляем unreadCount в чате при загрузке сообщений
+        chat.unreadCount.set(userId.toString(), 0);
+        chat.markModified('unreadCount');
+        await chat.save();
+
         res.json(messages);
     } catch (err) {
         console.log(err);
