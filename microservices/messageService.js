@@ -4,6 +4,12 @@ import cors from 'cors';
 import fs from 'fs';
 import multer from 'multer';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import {
     createChat,
     getUserChats,
@@ -13,7 +19,8 @@ import {
     deleteMessage,
     deleteChat,
     clearChat,
-    editMessage
+    editMessage,
+    getChatFiles
 } from '../controllers/messageController.js';
 import { messageValidation } from '../validations.js';
 import { handleValidationErrors, checkAuth } from "../utils/index.js";
@@ -27,7 +34,7 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
 const messageUpload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
-            const uploadDir = '../uploads/messages';
+            const uploadDir = path.join(__dirname, '..', 'uploads', 'messages');
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
@@ -60,7 +67,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use((req, res, next) => {
     const { method, url, headers } = req;
@@ -84,6 +91,7 @@ app.use((req, res, next) => {
 app.post('/chats/create', checkAuth, createChat);
 app.get('/chats', checkAuth, getUserChats);
 app.get('/chats/:chatId/messages', checkAuth, getChatMessages);
+app.get('/chats/:chatId/files', checkAuth, getChatFiles);
 app.post('/messages/send', checkAuth, messageValidation, handleValidationErrors, sendMessage);
 app.post('/messages/upload-files', checkAuth, messageUpload.array('files'), uploadMessageFiles);
 

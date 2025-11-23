@@ -21,6 +21,12 @@ import { postCreateValidation } from '../validations.js';
 import multer from 'multer';
 import fs from "fs";
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => console.log("Microservice Database Connected Successfully"))
@@ -30,7 +36,7 @@ const app = express();
 const upload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
-            const uploadDir = '../uploads';
+            const uploadDir = path.join(__dirname, '..', 'uploads');
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
