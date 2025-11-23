@@ -307,20 +307,22 @@ export const getOne = async (req, res) => {
     }
 }
 export const remove = async (req, res) => {
-    try{
+    try {
         const postId = req.params.id;
-
-        PostModel.findOneAndDelete({ _id: postId })
-            .then(doc => {
-                if (!doc) {
-                    return res.status(404).json({ message: 'Статья не найдена' });
-                }
-                res.json({ success: true });
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({ message: 'Не удалось удалить статью' });
-            });
+        
+        // Сначала находим пост, чтобы получить список комментариев
+        const post = await PostModel.findById(postId);
+        if (!post) {
+            return res.status(404).json({ message: 'Статья не найдена' });
+        }
+        
+        // Удаляем все связанные комментарии
+        await CommentModel.deleteMany({ _id: { $in: post.comments } });
+        
+        // Удаляем сам пост
+        await PostModel.findByIdAndDelete(postId);
+        
+        res.json({ success: true });
     }
     catch (err) {
         console.log(err);

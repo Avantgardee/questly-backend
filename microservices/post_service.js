@@ -43,7 +43,11 @@ const upload = multer({
 });
 
 const logToFile = (message) => {
-    fs.appendFileSync('PostService.log', message, (err) => {
+    const logsDir = '../logs';
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+    }
+    fs.appendFileSync(`${logsDir}/PostService.log`, message, (err) => {
         if (err) {
             console.error('Error writing to log file', err);
         }

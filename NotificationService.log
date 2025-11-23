@@ -1,0 +1,797 @@
+Notification microservice started on port 5003
+Microservice Database Connected Successfully
+========================================
+[2025-09-03T19:25:01.393Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+host: localhost:4444
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTY4NTE3OTYsImV4cCI6MTc1OTQ0Mzc5Nn0.kM61lEVDFDRiedQXF6g95-xT2ivvQZB9tDS_4Z399sw
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+Body: {}
+Response: 304 Not Modified - Time: 203ms
+========================================
+
+========================================
+[2025-09-03T19:25:01.610Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+host: localhost:4444
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTY4NTE3OTYsImV4cCI6MTc1OTQ0Mzc5Nn0.kM61lEVDFDRiedQXF6g95-xT2ivvQZB9tDS_4Z399sw
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+Body: {}
+Response: 304 Not Modified - Time: 176ms
+========================================
+
+========================================
+[2025-09-03T19:25:01.897Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+host: localhost:4444
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTY4NTE3OTYsImV4cCI6MTc1OTQ0Mzc5Nn0.kM61lEVDFDRiedQXF6g95-xT2ivvQZB9tDS_4Z399sw
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+Body: {}
+Response: 304 Not Modified - Time: 176ms
+========================================
+Notification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected Successfully
+========================================
+[2025-09-05T16:40:36.341Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcwMzEzNDQsImV4cCI6MTc1OTYyMzM0NH0.bVSVQCVWS40UtCzA4pORszh13vkcE_8qfhrh2GYgVsE
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 370ms
+========================================
+
+========================================
+[2025-09-05T16:40:36.722Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcwMzEzNDQsImV4cCI6MTc1OTYyMzM0NH0.bVSVQCVWS40UtCzA4pORszh13vkcE_8qfhrh2GYgVsE
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 359ms
+========================================
+
+========================================
+[2025-09-05T16:40:37.088Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcwMzEzNDQsImV4cCI6MTc1OTYyMzM0NH0.bVSVQCVWS40UtCzA4pORszh13vkcE_8qfhrh2GYgVsE
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 360ms
+========================================
+
+========================================
+[2025-09-05T16:43:09.273Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcwOTA1ODksImV4cCI6MTc1OTY4MjU4OX0.B4Sm-Yj7gOafNFXUCGKf60drXYMbiAbRCH6h8v6Ro1I
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 375ms
+========================================
+
+========================================
+[2025-09-05T16:43:09.659Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcwOTA1ODksImV4cCI6MTc1OTY4MjU4OX0.B4Sm-Yj7gOafNFXUCGKf60drXYMbiAbRCH6h8v6Ro1I
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 357ms
+========================================
+Notification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected Successfully
+========================================
+[2025-09-05T19:57:50.223Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDIyNzAsImV4cCI6MTc1OTY5NDI3MH0.608dKrwGIHihvWM31dpXxqjfG4pjTT7xIjBtAah_HTU
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 376ms
+========================================
+
+========================================
+[2025-09-05T19:57:50.607Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDIyNzAsImV4cCI6MTc1OTY5NDI3MH0.608dKrwGIHihvWM31dpXxqjfG4pjTT7xIjBtAah_HTU
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 350ms
+========================================
+
+========================================
+[2025-09-05T20:11:49.749Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDMxMDksImV4cCI6MTc1OTY5NTEwOX0.a5wXaMbQu-ldAIAs2aZddkgniRA8FAXZdu3H2vcbTjI
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 358ms
+========================================
+
+========================================
+[2025-09-05T20:11:50.114Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDMxMDksImV4cCI6MTc1OTY5NTEwOX0.a5wXaMbQu-ldAIAs2aZddkgniRA8FAXZdu3H2vcbTjI
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 353ms
+========================================
+
+========================================
+[2025-09-05T20:11:50.474Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDMxMDksImV4cCI6MTc1OTY5NTEwOX0.a5wXaMbQu-ldAIAs2aZddkgniRA8FAXZdu3H2vcbTjI
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 348ms
+========================================
+
+========================================
+[2025-09-05T20:12:12.840Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDMxMDksImV4cCI6MTc1OTY5NTEwOX0.a5wXaMbQu-ldAIAs2aZddkgniRA8FAXZdu3H2vcbTjI
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 354ms
+========================================
+
+========================================
+[2025-09-05T20:14:13.507Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+host: localhost:5003
+Body: {}
+Response: 200 OK - Time: 173ms
+========================================
+
+========================================
+[2025-09-05T20:14:13.685Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 172ms
+========================================
+
+========================================
+[2025-09-05T20:14:19.466Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 174ms
+========================================
+Notification microservice started on port 5003
+Microservice Database Connected Successfully
+========================================
+[2025-09-05T20:15:45.280Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 188ms
+========================================
+
+========================================
+[2025-09-05T20:15:45.477Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 179ms
+========================================
+
+========================================
+[2025-09-05T20:15:45.804Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 174ms
+========================================
+
+========================================
+[2025-09-05T20:16:00.169Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDMyNTMsImV4cCI6MTc1OTY5NTI1M30.lcoDsO5-F_P017-b5HD4T-iP1fjx4lsU4Mdnl40lWhc
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 178ms
+========================================
+
+========================================
+[2025-09-05T20:18:15.588Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDM0OTUsImV4cCI6MTc1OTY5NTQ5NX0.LD6NuyMwbYCaUi05D79B7--tXe6bRnPm_0ubiYf5oeU
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 175ms
+========================================
+
+========================================
+[2025-09-05T20:18:15.847Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDM0OTUsImV4cCI6MTc1OTY5NTQ5NX0.LD6NuyMwbYCaUi05D79B7--tXe6bRnPm_0ubiYf5oeU
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 176ms
+========================================
+
+========================================
+[2025-09-05T20:18:16.029Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDM0OTUsImV4cCI6MTc1OTY5NTQ5NX0.LD6NuyMwbYCaUi05D79B7--tXe6bRnPm_0ubiYf5oeU
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 178ms
+========================================
+
+========================================
+[2025-09-05T20:18:21.237Z] Request received: GET /notifications/68bb4495883373dbbceb49c4
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGJiNDQ5NTg4MzM3M2RiYmNlYjQ5YzQiLCJpYXQiOjE3NTcxMDM0OTUsImV4cCI6MTc1OTY5NTQ5NX0.LD6NuyMwbYCaUi05D79B7--tXe6bRnPm_0ubiYf5oeU
+if-none-match: W/"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 178ms
+========================================
+
+========================================
+[2025-09-05T20:18:47.553Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDM1MjcsImV4cCI6MTc1OTY5NTUyN30.I8zHOt7qjU4QqRhR2EG2qRSr4fIvJG-lwiPMFMpkTeg
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 377ms
+========================================
+
+========================================
+[2025-09-05T20:18:47.955Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDM1MjcsImV4cCI6MTc1OTY5NTUyN30.I8zHOt7qjU4QqRhR2EG2qRSr4fIvJG-lwiPMFMpkTeg
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 356ms
+========================================
+
+========================================
+[2025-09-05T20:18:48.330Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDM1MjcsImV4cCI6MTc1OTY5NTUyN30.I8zHOt7qjU4QqRhR2EG2qRSr4fIvJG-lwiPMFMpkTeg
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 355ms
+========================================
+
+========================================
+[2025-09-05T20:18:50.279Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36
+sec-ch-ua: "Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NTcxMDM1MjcsImV4cCI6MTc1OTY5NTUyN30.I8zHOt7qjU4QqRhR2EG2qRSr4fIvJG-lwiPMFMpkTeg
+if-none-match: W/"2bd-RvxnlBaM7WW7WToQr/iALFFfIIA"
+host: localhost:5003
+Body: {}
+Response: 304 Not Modified - Time: 353ms
+========================================
+Notification microservice started on port 5003
+Microservice Database Connected SuccessfullyNotification microservice started on port 5003
+Microservice Database Connected Successfully
+========================================
+[2025-11-23T16:19:31.569Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NjM5MDI3NzEsImV4cCI6MTc2NjQ5NDc3MX0._rScFKLXG92Pix710eLamoY63etVQeM70wxsjW3oha4
+if-none-match: W/"11c4-4pXeW0cXDjkZ1CJq6+ObVwcQspk"
+host: localhost:5003
+Body: {}
+Cookies: {
+  "__stripe_mid": "7da9affe-ff72-4d1c-a33d-3d6698499052c15646",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NjM5MDI3NzEsImV4cCI6MTc2NjQ5NDc3MX0._rScFKLXG92Pix710eLamoY63etVQeM70wxsjW3oha4"
+}
+Response: 304 Not Modified - Time: 488ms
+========================================
+
+========================================
+[2025-11-23T16:19:32.065Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NjM5MDI3NzEsImV4cCI6MTc2NjQ5NDc3MX0._rScFKLXG92Pix710eLamoY63etVQeM70wxsjW3oha4
+if-none-match: W/"11c4-4pXeW0cXDjkZ1CJq6+ObVwcQspk"
+host: localhost:5003
+Body: {}
+Cookies: {
+  "__stripe_mid": "7da9affe-ff72-4d1c-a33d-3d6698499052c15646",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NjM5MDI3NzEsImV4cCI6MTc2NjQ5NDc3MX0._rScFKLXG92Pix710eLamoY63etVQeM70wxsjW3oha4"
+}
+Response: 304 Not Modified - Time: 463ms
+========================================
+
+========================================
+[2025-11-23T16:19:32.691Z] Request received: GET /notifications/663cb48e8c2c1903082c746b
+Headers:
+accept: application/json, text/plain, */*
+connection: keep-alive
+sec-ch-ua-platform: "Windows"
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36
+sec-ch-ua: "Chromium";v="142", "Google Chrome";v="142", "Not_A Brand";v="99"
+dnt: 1
+sec-ch-ua-mobile: ?0
+origin: http://localhost:3000
+sec-fetch-site: same-site
+sec-fetch-mode: cors
+sec-fetch-dest: empty
+referer: http://localhost:3000/
+accept-encoding: gzip, deflate, br, zstd
+accept-language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+cookie: __stripe_mid=7da9affe-ff72-4d1c-a33d-3d6698499052c15646; token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NjM5MDI3NzEsImV4cCI6MTc2NjQ5NDc3MX0._rScFKLXG92Pix710eLamoY63etVQeM70wxsjW3oha4
+if-none-match: W/"11c4-4pXeW0cXDjkZ1CJq6+ObVwcQspk"
+host: localhost:5003
+Body: {}
+Cookies: {
+  "__stripe_mid": "7da9affe-ff72-4d1c-a33d-3d6698499052c15646",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjNjYjQ4ZThjMmMxOTAzMDgyYzc0NmIiLCJpYXQiOjE3NjM5MDI3NzEsImV4cCI6MTc2NjQ5NDc3MX0._rScFKLXG92Pix710eLamoY63etVQeM70wxsjW3oha4"
+}
+Response: 304 Not Modified - Time: 452ms
+========================================
+Notification microservice started on port 5003

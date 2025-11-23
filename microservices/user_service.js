@@ -74,9 +74,13 @@ const noteUpload = multer({
 const parseFormData = multer().none();
 
 const logToFile = (message) => {
+    const logsDir = '../logs';
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+    }
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync('UserServiceLog.log', logMessage, (err) => {
+    fs.appendFileSync(`${logsDir}/UserServiceLog.log`, logMessage, (err) => {
         if (err) {
             console.error('Error writing to log file', err);
         }
