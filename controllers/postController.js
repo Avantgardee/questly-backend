@@ -32,15 +32,35 @@ export const getPopularTags = async (req, res) => {
 export const getAllWithTag = async (req, res) => {
     try{
         const tag = req.params.id;
-        const posts = await PostModel.find({ tags: tag }).populate('user', ['fullName', 'avatarUrl']).exec();
-        res.json(posts);
-    }
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
 
+        const posts = await PostModel.find({ tags: tag })
+            .populate('user', ['fullName', 'avatarUrl'])
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .exec();
+        
+        const total = await PostModel.countDocuments({ tags: tag });
+        
+        res.json({
+            posts,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
+    }
     catch (err) {
         console.log(err);
         res.status(500).json(
             {
-                message: 'Не удалось создать статью'
+                message: 'Не удалось получить статьи'
             });
     }
 };
@@ -48,14 +68,35 @@ export const getAllWithTag = async (req, res) => {
 export const getAllWithUser = async (req, res) => {
     try{
         const idUser = req.params.id;
-        const posts = await PostModel.find({ user: idUser }).populate('user', ['fullName', 'avatarUrl']).exec();
-        res.json(posts);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const posts = await PostModel.find({ user: idUser })
+            .populate('user', ['fullName', 'avatarUrl'])
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
+            .exec();
+        
+        const total = await PostModel.countDocuments({ user: idUser });
+        
+        res.json({
+            posts,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
     }
     catch (err) {
         console.log(err);
         res.status(500).json(
             {
-                message: 'Не удалось создать статью'
+                message: 'Не удалось получить статьи'
             });
     }
 };
@@ -108,17 +149,35 @@ export const addImage = async (req,res) => {
 
 export const getAll = async (req, res) => {
     try{
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
         const posts = await PostModel.find()
             .populate('user', ['fullName', 'avatarUrl'])
             .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit)
             .exec();
-        res.json(posts);
+        
+        const total = await PostModel.countDocuments();
+        
+        res.json({
+            posts,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
     }
     catch (err) {
         console.log(err);
         res.status(500).json(
             {
-                message: 'Не удалось создать статью'
+                message: 'Не удалось получить статьи'
             });
     }
 }
@@ -149,11 +208,31 @@ export const getAllWithFilter = async (req, res) => {
         const how = req.params.how;
         const str = req.params.str || '';
         const filterDirection = how === 'asc' ? 1 : -1;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
 
         let posts;
+        let total;
         const titleSearch = str ? { title: { $regex: new RegExp(str, 'i') } } : {};
 
         if (postFilter === 'comments') {
+            // Для агрегации сначала получаем общее количество
+            const countResult = await PostModel.aggregate([
+                {
+                    $match: titleSearch
+                },
+                {
+                    $addFields: {
+                        commentCount: { $size: '$comments' }
+                    }
+                },
+                {
+                    $count: 'total'
+                }
+            ]);
+            total = countResult[0]?.total || 0;
+
             posts = await PostModel.aggregate([
                 {
                     $match: titleSearch
@@ -190,18 +269,36 @@ export const getAllWithFilter = async (req, res) => {
                         updatedAt: 1,
                         commentCount: 1
                     }
+                },
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
                 }
             ]);
         } else {
             const sortCriteria = {};
             sortCriteria[postFilter] = filterDirection;
+            total = await PostModel.countDocuments(titleSearch);
             posts = await PostModel.find(titleSearch)
                 .populate('user', ['fullName', 'avatarUrl'])
                 .sort(sortCriteria)
+                .skip(skip)
+                .limit(limit)
                 .exec();
         }
 
-        res.json(posts);
+        res.json({
+            posts,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -217,22 +314,39 @@ export const getAllPostsFromSubscriptions = async (req, res) => {
         const how = req.params.how;
         const str = req.params.str || '';
         const filterDirection = how === 'asc' ? 1 : -1;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
 
         const user = await UserModel.findById(userId).select('subscriptions');
         if (!user) {
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
 
-
         const titleSearch = str ? { title: { $regex: new RegExp(str, 'i') } } : {};
-
         const authorFilter = { user: { $in: user.subscriptions } };
-
         const searchCriteria = { ...titleSearch, ...authorFilter };
 
         let posts;
+        let total;
 
         if (postFilter === 'comments') {
+            // Для агрегации сначала получаем общее количество
+            const countResult = await PostModel.aggregate([
+                {
+                    $match: searchCriteria
+                },
+                {
+                    $addFields: {
+                        commentCount: { $size: '$comments' }
+                    }
+                },
+                {
+                    $count: 'total'
+                }
+            ]);
+            total = countResult[0]?.total || 0;
+
             posts = await PostModel.aggregate([
                 {
                     $match: searchCriteria
@@ -269,18 +383,36 @@ export const getAllPostsFromSubscriptions = async (req, res) => {
                         updatedAt: 1,
                         commentCount: 1
                     }
+                },
+                {
+                    $skip: skip
+                },
+                {
+                    $limit: limit
                 }
             ]);
         } else {
             const sortCriteria = {};
             sortCriteria[postFilter] = filterDirection;
+            total = await PostModel.countDocuments(searchCriteria);
             posts = await PostModel.find(searchCriteria)
                 .populate('user', ['fullName', 'avatarUrl'])
                 .sort(sortCriteria)
+                .skip(skip)
+                .limit(limit)
                 .exec();
         }
 
-        res.json(posts);
+        res.json({
+            posts,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({
