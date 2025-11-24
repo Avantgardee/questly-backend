@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import { checkAuth, handleValidationErrors } from '../utils/index.js';
+import { checkAuth, handleValidationErrors, optionalAuth } from '../utils/index.js';
 import {
     getPopularTags,
     getAllWithTag,
@@ -15,12 +15,21 @@ import {
     getOne,
     remove,
     update,
-    updateImage
+    updateImage,
+    likePost,
+    getPostLikes,
+    getMostLikedPosts
 } from '../controllers/postController.js';
 import { postCreateValidation } from '../validations.js';
 import multer from 'multer';
 import fs from "fs";
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => console.log("Microservice Database Connected Successfully"))
@@ -30,7 +39,7 @@ const app = express();
 const upload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
-            const uploadDir = '../uploads';
+            const uploadDir = path.join(__dirname, '..', 'uploads');
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
@@ -43,7 +52,11 @@ const upload = multer({
 });
 
 const logToFile = (message) => {
-    fs.appendFileSync('PostService.log', message, (err) => {
+    const logsDir = '../logs';
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+    }
+    fs.appendFileSync(`${logsDir}/PostService.log`, message, (err) => {
         if (err) {
             console.error('Error writing to log file', err);
         }
@@ -105,13 +118,16 @@ const conditionalUpload = (req, res, next) => {
 app.get('/posts', getAll);
 app.get('/posts/sort/:id/:how/:str?', getAllWithFilter);
 app.get('/posts/sortWithSubscriptions/:id/:how/:str?', checkAuth, getAllPostsFromSubscriptions);
-app.get('/posts/:id', getOne);
-app.get('/tags/:id', getAllWithTag);
+app.get('/posts/most-liked', getMostLikedPosts);
 app.get('/posts/user/:id', getAllWithUser);
 app.get('/posts/comments/:id', getPostComments);
+app.get('/posts/:id', optionalAuth, getOne);
+app.get('/tags/:id', getAllWithTag);
 app.get('/tags', getPopularTags);
 app.post('/posts/data', checkAuth, postCreateValidation, handleValidationErrors, create);
 app.post('/posts/image', upload.single('image'), addImage);
+app.post('/posts/:id/like', checkAuth, likePost);
+app.get('/posts/:id/likes', getPostLikes);
 app.delete('/posts/:id', checkAuth, remove);
 app.patch('/posts/data/:id', checkAuth, postCreateValidation, handleValidationErrors, update);
 app.patch('/posts/image/:id', checkAuth, conditionalUpload, updateImage);

@@ -1,2 +1,6 @@
 node_modules
 /.idea
+uploads/
+logs/
+scripts/
+scripts/removeCommentIndex.js

@@ -4,6 +4,12 @@ import cors from 'cors';
 import fs from 'fs';
 import multer from 'multer';
 import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 import {
     registerData,
     registerImage,
@@ -44,7 +50,7 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
 const upload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
-            const uploadDir = '../uploads';
+            const uploadDir = path.join(__dirname, '..', 'uploads');
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
@@ -59,7 +65,7 @@ const upload = multer({
 const noteUpload = multer({
     storage: multer.diskStorage({
         destination: (_, __, cb) => {
-            const uploadDir = '../uploads/notes';
+            const uploadDir = path.join(__dirname, '..', 'uploads', 'notes');
             if (!fs.existsSync(uploadDir)) {
                 fs.mkdirSync(uploadDir, { recursive: true });
             }
@@ -74,9 +80,13 @@ const noteUpload = multer({
 const parseFormData = multer().none();
 
 const logToFile = (message) => {
+    const logsDir = '../logs';
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+    }
     const timestamp = new Date().toISOString();
     const logMessage = `[${timestamp}] ${message}\n`;
-    fs.appendFileSync('UserServiceLog.log', logMessage, (err) => {
+    fs.appendFileSync(`${logsDir}/UserServiceLog.log`, logMessage, (err) => {
         if (err) {
             console.error('Error writing to log file', err);
         }
@@ -96,7 +106,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use((req, res, next) => {
     const { method, url, headers, body } = req;

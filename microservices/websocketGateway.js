@@ -131,6 +131,9 @@ async function handleMessage(senderId, message) {
         case 'MESSAGE_DELIVERED':
             await handleMessageDelivered(senderId, message);
             break;
+        case 'DELETE_CHAT':
+            await handleDeleteChat(senderId, message);
+            break;
         default:
             console.log('Unknown message type:', message.type);
     }
@@ -187,15 +190,37 @@ async function handleDeleteMessage(senderId, message) {
             console.log('Updated last message for chat:', chat._id);
         }
 
-        for (const participantId of messageDoc.chat.participants) {
-            const participantStr = participantId.toString();
-            const ws = connectedUsers.get(participantStr);
+        // Получаем обновленный чат с новым lastMessage и полными данными участников
+        const updatedChat = await ChatModel.findById(messageDoc.chat._id)
+            .populate('participants', 'fullName avatarUrl')
+            .populate('lastMessage')
+            .populate({
+                path: 'lastMessage',
+                populate: {
+                    path: 'sender',
+                    select: 'fullName avatarUrl'
+                }
+            });
+
+        // Преобразуем unreadCount Map в объект для JSON
+        const chatObject = updatedChat.toObject();
+        chatObject.unreadCount = Object.fromEntries(chatObject.unreadCount || []);
+
+        // Сохраняем ID участников для отправки
+        const participantIds = messageDoc.chat.participants.map(p => p.toString());
+
+        for (const participantId of participantIds) {
+            const ws = connectedUsers.get(participantId);
             if (ws && ws.readyState === 1) {
                 ws.send(JSON.stringify({
                     type: 'MESSAGE_DELETED',
-                    data: { messageId, chatId: messageDoc.chat._id }
+                    data: { 
+                        messageId, 
+                        chatId: messageDoc.chat._id,
+                        chat: chatObject
+                    }
                 }));
-                console.log('Notified user about deletion:', participantStr);
+                console.log('Notified user about deletion:', participantId);
             }
         }
 
@@ -235,16 +260,33 @@ async function handleEditMessage(senderId, message) {
         await messageDoc.save();
 
         await messageDoc.populate('sender', 'fullName avatarUrl');
+        if (messageDoc.replyTo) {
+            await messageDoc.populate({
+                path: 'replyTo',
+                populate: { path: 'sender', select: 'fullName avatarUrl' }
+            });
+        }
         console.log('Message edited:', messageId);
 
         const chat = await ChatModel.findById(messageDoc.chat);
+        
+        // Проверяем, является ли это сообщение последним в чате
+        if (chat.lastMessage && chat.lastMessage.toString() === messageId) {
+            chat.lastMessage = messageDoc._id;
+            chat.updatedAt = new Date();
+            await chat.save();
+        }
+
         for (const participantId of chat.participants) {
             const participantStr = participantId.toString();
             const ws = connectedUsers.get(participantStr);
             if (ws && ws.readyState === 1) {
                 ws.send(JSON.stringify({
                     type: 'MESSAGE_EDITED',
-                    data: messageDoc
+                    data: {
+                        message: messageDoc,
+                        chat: chat
+                    }
                 }));
             }
         }
@@ -256,7 +298,7 @@ async function handleEditMessage(senderId, message) {
 
 async function handleSendMessage(senderId, message) {
     try {
-        const { chatId, text, attachments } = message.data;
+        const { chatId, text, attachments, replyTo } = message.data;
         console.log('Sending message to chat:', chatId, 'by user:', senderId);
 
         const chat = await ChatModel.findOne({
@@ -274,35 +316,61 @@ async function handleSendMessage(senderId, message) {
             sender: senderId,
             text,
             attachments,
+            replyTo: replyTo || null,
             status: 'sent'
         });
 
         await newMessage.save();
         await newMessage.populate('sender', 'fullName avatarUrl');
+        if (replyTo) {
+            await newMessage.populate({
+                path: 'replyTo',
+                populate: { path: 'sender', select: 'fullName avatarUrl' }
+            });
+        }
         console.log('Message saved to DB:', newMessage._id);
 
         chat.lastMessage = newMessage._id;
         chat.updatedAt = new Date();
 
-        chat.participants.forEach(participantId => {
-            if (participantId.toString() !== senderId) {
-                const currentCount = chat.unreadCount.get(participantId.toString()) || 0;
-                chat.unreadCount.set(participantId.toString(), currentCount + 1);
+        // Сохраняем ID участников до populate
+        const participantIds = chat.participants.map(p => p.toString());
+        
+        participantIds.forEach(participantId => {
+            if (participantId !== senderId) {
+                const currentCount = chat.unreadCount.get(participantId) || 0;
+                chat.unreadCount.set(participantId, currentCount + 1);
             }
         });
         chat.markModified('unreadCount');
         await chat.save();
 
-        const participants = chat.participants.map(p => p.toString());
+        // Загружаем полную информацию о чате с участниками перед отправкой
+        await chat.populate('participants', 'fullName avatarUrl');
+        await chat.populate({
+            path: 'lastMessage',
+            populate: {
+                path: 'sender',
+                select: 'fullName avatarUrl'
+            }
+        });
 
-        for (const participantId of participants) {
+        // Преобразуем unreadCount Map в объект для JSON перед циклом
+        const chatObject = chat.toObject();
+        chatObject.unreadCount = Object.fromEntries(chatObject.unreadCount || []);
+
+        // Сериализуем сообщение правильно
+        const messageForSend = newMessage.toObject();
+        messageForSend.chat = chatId.toString();
+
+        for (const participantId of participantIds) {
             const ws = connectedUsers.get(participantId);
             if (ws && ws.readyState === 1) {
                 ws.send(JSON.stringify({
                     type: 'NEW_MESSAGE',
                     data: {
-                        message: newMessage,
-                        chat: chat,
+                        message: messageForSend,
+                        chat: chatObject,
                     }
                 }));
                 console.log('Message sent to user:', participantId);
@@ -463,6 +531,67 @@ async function handleMarkChatAsRead(senderId, message) {
 
     } catch (error) {
         console.error('Error handling mark chat as read:', error);
+    }
+}
+
+async function handleDeleteChat(senderId, message) {
+    try {
+        const { chatId } = message.data;
+        console.log('Deleting chat:', chatId, 'by user:', senderId);
+
+        const chat = await ChatModel.findOne({
+            _id: chatId,
+            participants: senderId
+        });
+
+        if (!chat) {
+            console.log('Chat not found or access denied:', chatId);
+            return;
+        }
+
+        // Сохраняем список участников перед удалением
+        const participants = chat.participants.map(p => p.toString());
+
+        // Удаляем все сообщения и их файлы
+        const messages = await MessageModel.find({ chat: chatId });
+        
+        messages.forEach(message => {
+            if (message.attachments && message.attachments.length > 0) {
+                message.attachments.forEach(filePath => {
+                    const fullPath = path.join(__dirname, '..', filePath.startsWith('/') ? filePath.substring(1) : filePath);
+                    if (fs.existsSync(fullPath)) {
+                        try {
+                            fs.unlinkSync(fullPath);
+                            console.log('Deleted file:', filePath);
+                        } catch (fileError) {
+                            console.error('Error deleting file:', fileError);
+                        }
+                    }
+                });
+            }
+        });
+
+        await MessageModel.deleteMany({ chat: chatId });
+        await ChatModel.findByIdAndDelete(chatId);
+        console.log('Chat deleted from DB:', chatId);
+
+        // Уведомляем всех участников чата об удалении
+        for (const participantId of participants) {
+            const ws = connectedUsers.get(participantId);
+            if (ws && ws.readyState === 1) {
+                ws.send(JSON.stringify({
+                    type: 'CHAT_DELETED',
+                    data: {
+                        chatId: chatId,
+                        deletedBy: senderId
+                    }
+                }));
+                console.log('Notified user about chat deletion:', participantId);
+            }
+        }
+
+    } catch (error) {
+        console.error('Error handling delete chat:', error);
     }
 }
 

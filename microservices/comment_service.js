@@ -6,6 +6,10 @@ import { checkAuth, handleValidationErrors } from '../utils/index.js';
 import { createComment } from '../controllers/commentController.js';
 import { commentCreateValidation } from '../validations.js';
 import cookieParser from 'cookie-parser';
+// Импортируем модели, чтобы они были зарегистрированы в соединении MongoDB
+import UserModel from '../models/user.js';
+import CommentModel from '../models/comment.js';
+import PostModel from '../models/post.js';
 
 mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?retryWrites=true&w=majority&appName=Cluster0")
     .then(() => logToFile("Microservice Database Connected Successfully"))
@@ -14,7 +18,11 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
 const app = express();
 
 const logToFile = (message) => {
-    fs.appendFileSync('CommentService.log', message, (err) => {
+    const logsDir = '../logs';
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+    }
+    fs.appendFileSync(`${logsDir}/CommentService.log`, message, (err) => {
         if (err) {
             console.error('Error writing to log file', err);
         }

@@ -35,7 +35,7 @@ export const deleteMessage = async (req, res) => {
 
         if (message.attachments && message.attachments.length > 0) {
             message.attachments.forEach(filePath => {
-                const fullPath = path.join(__dirname, '..', '..', filePath);
+                const fullPath = path.join(__dirname, '..', filePath.startsWith('/') ? filePath.substring(1) : filePath);
                 if (fs.existsSync(fullPath)) {
                     fs.unlinkSync(fullPath);
                 }
@@ -86,7 +86,7 @@ export const deleteChat = async (req, res) => {
         messages.forEach(message => {
             if (message.attachments && message.attachments.length > 0) {
                 message.attachments.forEach(filePath => {
-                    const fullPath = path.join(__dirname, '..', '..', filePath);
+                    const fullPath = path.join(__dirname, '..', filePath.startsWith('/') ? filePath.substring(1) : filePath);
                     if (fs.existsSync(fullPath)) {
                         fs.unlinkSync(fullPath);
                     }
@@ -128,7 +128,7 @@ export const clearChat = async (req, res) => {
         messages.forEach(message => {
             if (message.attachments && message.attachments.length > 0) {
                 message.attachments.forEach(filePath => {
-                    const fullPath = path.join(__dirname, '..', '..', filePath);
+                    const fullPath = path.join(__dirname, '..', filePath.startsWith('/') ? filePath.substring(1) : filePath);
                     if (fs.existsSync(fullPath)) {
                         fs.unlinkSync(fullPath);
                     }
@@ -276,6 +276,10 @@ export const getChatMessages = async (req, res) => {
 
         const messages = await MessageModel.find({ chat: chatId })
             .populate('sender', 'fullName avatarUrl')
+            .populate({
+                path: 'replyTo',
+                populate: { path: 'sender', select: 'fullName avatarUrl' }
+            })
             .sort({ createdAt: 1 });
 
         await MessageModel.updateMany(
@@ -289,6 +293,11 @@ export const getChatMessages = async (req, res) => {
                 status: 'read'
             }
         );
+
+        // Обновляем unreadCount в чате при загрузке сообщений
+        chat.unreadCount.set(userId.toString(), 0);
+        chat.markModified('unreadCount');
+        await chat.save();
 
         res.json(messages);
     } catch (err) {
@@ -357,5 +366,59 @@ export const uploadMessageFiles = async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось загрузить файлы' });
+    }
+};
+
+export const getChatFiles = async (req, res) => {
+    try {
+        const { chatId } = req.params;
+        const userId = req.userId;
+
+        if (!chatId) {
+            return res.status(400).json({ message: 'Укажите ID чата' });
+        }
+
+        const chat = await ChatModel.findOne({
+            _id: chatId,
+            participants: userId
+        });
+
+        if (!chat) {
+            return res.status(403).json({ message: 'Доступ запрещен' });
+        }
+
+        const messages = await MessageModel.find({ 
+            chat: chatId,
+            attachments: { $exists: true, $ne: [] }
+        })
+            .populate('sender', 'fullName avatarUrl')
+            .select('attachments sender createdAt')
+            .sort({ createdAt: -1 });
+
+        const files = [];
+        messages.forEach(message => {
+            if (message.attachments && message.attachments.length > 0) {
+                message.attachments.forEach(filePath => {
+                    const fileName = filePath.split('/').pop();
+                    const fileExtension = fileName.split('.').pop()?.toLowerCase();
+                    const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(fileExtension);
+                    
+                    files.push({
+                        url: filePath,
+                        fileName: fileName,
+                        fileType: fileExtension,
+                        isImage: isImage,
+                        sender: message.sender,
+                        createdAt: message.createdAt,
+                        messageId: message._id
+                    });
+                });
+            }
+        });
+
+        res.json({ success: true, files });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Не удалось получить файлы' });
     }
 };

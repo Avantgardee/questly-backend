@@ -328,6 +328,10 @@ export const getSubscriptionsOrSubscribers = async (req, res) => {
     try {
         const userId = req.params.id;
         const filter = req.params.group;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || '';
+        const skip = (page - 1) * limit;
 
         if (!userId) {
             return res.status(400).json({ message: 'Пожалуйста, предоставьте все необходимые данные' });
@@ -347,9 +351,33 @@ export const getSubscriptionsOrSubscribers = async (req, res) => {
             return res.status(400).json({ message: 'Неверный фильтр' });
         }
 
-        const usersData = await UserModel.find({ _id: { $in: data } }).select('fullName avatarUrl subscriptions subscribers email');
+        // Строим запрос с поиском
+        const searchQuery = { _id: { $in: data } };
+        if (search) {
+            searchQuery.$or = [
+                { fullName: { $regex: new RegExp(search, 'i') } },
+                { email: { $regex: new RegExp(search, 'i') } }
+            ];
+        }
 
-        res.json(usersData);
+        const usersData = await UserModel.find(searchQuery)
+            .select('fullName avatarUrl subscriptions subscribers email')
+            .skip(skip)
+            .limit(limit)
+            .exec();
+
+        const total = await UserModel.countDocuments(searchQuery);
+
+        res.json({
+            users: usersData,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось получить данные' });
@@ -358,9 +386,38 @@ export const getSubscriptionsOrSubscribers = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
     try {
-        const users = await UserModel.find().select('fullName avatarUrl subscriptions subscribers email');
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const search = req.query.search || '';
+        const skip = (page - 1) * limit;
 
-        res.json(users);
+        // Строим запрос с поиском
+        const searchQuery = {};
+        if (search) {
+            searchQuery.$or = [
+                { fullName: { $regex: new RegExp(search, 'i') } },
+                { email: { $regex: new RegExp(search, 'i') } }
+            ];
+        }
+
+        const users = await UserModel.find(searchQuery)
+            .select('fullName avatarUrl subscriptions subscribers email')
+            .skip(skip)
+            .limit(limit)
+            .exec();
+
+        const total = await UserModel.countDocuments(searchQuery);
+
+        res.json({
+            users,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit),
+                hasMore: page * limit < total
+            }
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: 'Не удалось получить данные пользователей' });

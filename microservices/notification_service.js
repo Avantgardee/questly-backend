@@ -15,7 +15,11 @@ mongoose.connect("mongodb+srv://admin:wwwwww@cluster0.0qdhldu.mongodb.net/blog?r
 const app = express();
 
 const logToFile = (message) => {
-    fs.appendFileSync('NotificationService.log', message, (err) => {
+    const logsDir = '../logs';
+    if (!fs.existsSync(logsDir)) {
+        fs.mkdirSync(logsDir, { recursive: true });
+    }
+    fs.appendFileSync(`${logsDir}/NotificationService.log`, message, (err) => {
         if (err) {
             console.error('Error writing to log file', err);
         }

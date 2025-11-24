@@ -3,12 +3,13 @@ import NotificationModel from '../models/notification.js';
 import UserModel from '../models/user.js';
 import ChatModel from '../models/Chat.js';
 import MessageModel from '../models/Message.js';
+import PostModel from '../models/post.js';
 export async function startRabbitMQConsumer() {
     try {
         const connection = await amqp.connect('amqp://localhost');
         const channel = await connection.createChannel();
 
-        const queues = ['post_queue', 'comment_queue', 'subscribe_queue', 'message_queue'];
+        const queues = ['post_queue', 'comment_queue', 'subscribe_queue', 'message_queue', 'like_queue'];
 
         for (const queue of queues) {
             await channel.assertQueue(queue, { durable: true });
@@ -44,6 +45,26 @@ async function handleMessage(message, queue) {
             const recipient = chat.participants.find(p => p._id.toString() !== actionByUser);
             if (recipient) {
                 actionOnUser = [recipient._id];
+            }
+        }
+    } else if (queue === 'like_queue') {
+        // Для лайков actionOnUser - автор поста
+        const post = await PostModel.findById(postId);
+        if (post) {
+            actionOnUser = [post.user];
+            
+            // Проверяем, есть ли уже уведомление о лайке от этого пользователя для этого поста
+            const existingNotification = await NotificationModel.findOne({
+                actionByUser: actionByUser,
+                action: 'like',
+                post: postId,
+                actionOnUser: { $in: [post.user] }
+            });
+            
+            // Если уведомление уже существует, не создаем новое
+            if (existingNotification) {
+                console.log('Notification for like already exists, skipping:', existingNotification._id);
+                return;
             }
         }
     }
