@@ -1,5 +1,6 @@
 import PostModel from "../models/post.js";
 import CommentModel from "../models/comment.js";
+import UserModel from "../models/user.js";
 import {sendToRabbitMQ} from "./rabbitmq.js";
 
 
@@ -31,13 +32,36 @@ export const createComment = async (req, res) => {
             console.log(err);
             console.log('не получилось');
         }
-        res.json(commSave);
+        // Получаем данные пользователя отдельным запросом
+        const user = await UserModel.findById(commSave.user)
+            .select('fullName avatarUrl')
+            .exec();
+        
+        // Формируем объект комментария с данными пользователя
+        const commentWithUser = {
+            ...commSave.toObject(),
+            user: user ? {
+                _id: user._id,
+                fullName: user.fullName,
+                avatarUrl: user.avatarUrl
+            } : null
+        };
+        
+        res.json(commentWithUser);
     }
     catch (err){
-        console.log(err);
-        res.status(500).json(
-            {
-                message: 'Не удалось создать комментарий'
+        console.log('[COMMENT]', err);
+        
+        // Проверяем, является ли ошибка ошибкой дубликата ключа
+        if (err.code === 11000) {
+            return res.status(400).json({
+                message: 'Ошибка: уникальный индекс на поле text все еще существует в базе данных. Запустите скрипт removeCommentIndex.js для удаления индекса.'
             });
+        }
+        
+        res.status(500).json({
+            message: 'Не удалось создать комментарий',
+            error: process.env.NODE_ENV === 'development' ? err.message : undefined
+        });
     }
 }
