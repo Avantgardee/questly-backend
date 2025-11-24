@@ -1,7 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-import { checkAuth, handleValidationErrors } from '../utils/index.js';
+import { checkAuth, handleValidationErrors, optionalAuth } from '../utils/index.js';
 import {
     getPopularTags,
     getAllWithTag,
@@ -15,7 +15,10 @@ import {
     getOne,
     remove,
     update,
-    updateImage
+    updateImage,
+    likePost,
+    getPostLikes,
+    getMostLikedPosts
 } from '../controllers/postController.js';
 import { postCreateValidation } from '../validations.js';
 import multer from 'multer';
@@ -115,13 +118,16 @@ const conditionalUpload = (req, res, next) => {
 app.get('/posts', getAll);
 app.get('/posts/sort/:id/:how/:str?', getAllWithFilter);
 app.get('/posts/sortWithSubscriptions/:id/:how/:str?', checkAuth, getAllPostsFromSubscriptions);
-app.get('/posts/:id', getOne);
-app.get('/tags/:id', getAllWithTag);
+app.get('/posts/most-liked', getMostLikedPosts);
 app.get('/posts/user/:id', getAllWithUser);
 app.get('/posts/comments/:id', getPostComments);
+app.get('/posts/:id', optionalAuth, getOne);
+app.get('/tags/:id', getAllWithTag);
 app.get('/tags', getPopularTags);
 app.post('/posts/data', checkAuth, postCreateValidation, handleValidationErrors, create);
 app.post('/posts/image', upload.single('image'), addImage);
+app.post('/posts/:id/like', checkAuth, likePost);
+app.get('/posts/:id/likes', getPostLikes);
 app.delete('/posts/:id', checkAuth, remove);
 app.patch('/posts/data/:id', checkAuth, postCreateValidation, handleValidationErrors, update);
 app.patch('/posts/image/:id', checkAuth, conditionalUpload, updateImage);

@@ -19,6 +19,9 @@ export async function sendToRabbitMQ(message, actionType) {
             case 'message':
                 queue = 'message_queue';
                 break;
+            case 'like':
+                queue = 'like_queue';
+                break;
             default:
                 throw new Error('Invalid action type');
         }
